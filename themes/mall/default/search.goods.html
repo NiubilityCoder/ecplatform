@@ -1,0 +1,228 @@
+{include file=header.html}
+<script type="text/javascript" src="{lib file=search_goods.js}" charset="utf-8"></script>
+<script type="text/javascript">
+var upimg   = '{res file=images/up.gif}';
+var downimg = '{res file=images/down.gif}';
+imgUping = new Image();
+imgUping.src = upimg;
+</script>
+<script>
+$(function(){
+
+$("div[ectype='dl_price'] a").click(function(){
+	replaceParam('price', this.id);
+	return false;
+});
+
+$("div[ectype='dl_region'] a").click(function(){
+	replaceParam('region_id', this.id);
+	return false;
+});
+$("div[ectype='dl_brand'] a").click(function(){
+	replaceParam('brand', this.id);
+	return false;
+});
+
+});
+
+
+</script>
+
+<style type="text/css">
+.propmain{width:788px;margin-bottom:10px;line-height:20px;border:1px #E1E7F5 solid;}
+.attribute a{padding:0 20px 0 3px;display:inline-block;border:#e1e7f5 1px solid; background:#fff; position:relative; cursor:pointer; font-family:Arial;margin-top:2px;}
+.attribute a:hover{border:1px #2953A6 solid;color:#2953A6; text-decoration:none}
+.attribute a span{position:absolute;top:3px;right:3px; overflow:hidden;width:13px;height:13px; background:url('{res file=images/T1hVOdXmlwXXXXXXXX-88-124.png}') no-repeat -16px 0}
+.peach{border-bottom:1px dashed #e1e7f5;margin-bottom:5px; display:block;padding-bottom:5px;width:768px;}
+.peach h4{float:left;width:100px; font-weight:400;color:#666;font-size:100%;}
+.peach .propvalue{float:left;width:668px;}
+.peach .propvalue a{ margin:0 10px 0 0; font-family:Arial}
+.clear{clear:both;height:0; display:block; overflow:hidden}
+.location2{border:1px #E1E7F5 solid; background:#F7FAFF;width:783px;margin-bottom:10px;padding-left:5px;color:#999; height:28px; line-height:28px}
+.brand-title{margin-bottom:10px;}
+</style>
+
+
+{include file=curlocal.html}
+<div class="content">
+    <!--{if $goods_list}-->
+    <div class="left">
+        <div class="module_sidebar">
+            <h2><b>{$lang.by_category}</b></h2>
+            <div class="wrap">
+                <div class="wrap_child">
+                    <div class="side_textlist">
+                        <ul ectype="ul_category">
+                            <!--{foreach from=$categories item=category name=fe_category}-->
+                            <!-- {if $smarty.foreach.fe_category.iteration le 10} -->
+                            <li><a href="javascript:void(0);" id="{$category.cate_id}">{$category.cate_name|escape}</a>({$category.count})</li>
+                            <!-- {else} -->
+                            <li style="display:none"><a href="javascript:void(0);" id="{$category.cate_id}">{$category.cate_name|escape}</a></li>
+                            <!-- {/if} -->
+                            <!--{/foreach}-->
+                        </ul>
+                    </div>
+                    <!-- {if $category_count gt 10} -->
+                    <div class="more"><input type="button" class="brands_btn" value="{$lang.view_all_category}" id="show_category" /></div>
+                    <!-- {/if} -->
+                </div>
+            </div>
+
+            <!-- {if !$filters.brand} -->
+            <h2><b>{$lang.by_brand}</b></h2>
+            <div class="wrap">
+                <div class="wrap_child">
+                    <div class="side_textlist">
+                        <ul ectype="ul_brand">
+                            <!--{foreach from=$brands item=row name=fe_brand}-->
+                            <!-- {if $smarty.foreach.fe_brand.iteration le 10} -->
+                            <li><a href="javascript:void(0);" title="{$row.brand}" id="{$row.brand|escape:url}">{$row.brand|escape}</a> ({$row.count})</li>
+                            <!-- {else} -->
+                            <li style="display:none"><a href="javascript:void(0);" title="{$row.brand}" id="{$row.brand|escape:url}">{$row.brand|escape}</a> ({$row.count})</li>
+                            <!-- {/if} -->
+                            <!--{/foreach}-->
+                        </ul>
+                    </div>
+                    <!-- {if $brand_count gt 10} -->
+                    <div class="more"><input type="button" class="brands_btn" value="{$lang.view_all_brand}" id="show_brand" /></div>
+                    <!-- {/if} -->
+                </div>
+            </div>
+            <!-- {/if} -->
+
+            <h2><b>{$lang.by_price}</b></h2>
+            <div class="wrap">
+                <div class="wrap_child">
+                    <div class="side_textlist">
+                        <ul ectype="ul_price">
+                            <!--{foreach from=$price_intervals item=row}-->
+                            <li><a href="javascript:void(0);" title="{$row.min} - {$row.max}">{$row.min|price} - {$row.max|price}</a> ({$row.count})</li>
+                            <!--{/foreach}-->
+                            <li style="display:none"><input type="text" size="5" /> - <input type="text" size="5" /> <input type="button" id="search_by_price" value="{$lang.submit}" /></li>
+                        </ul>
+                    </div>
+                    <div class="more"><input type="button" class="brands_btn" value="{$lang.set_price_interval}" id="set_price_interval" /></div>
+                </div>
+            </div>
+
+            <!-- {if !$filters.region_id} -->
+            <h2><b>{$lang.by_region}</b></h2>
+            <div class="wrap">
+                <div class="wrap_child">
+                    <div class="side_textlist">
+                        <ul ectype="ul_region">
+                            <!--{foreach from=$regions item=row name=fe_region}-->
+                            <!-- {if $smarty.foreach.fe_region.iteration le 10} -->
+                            <li><a href="javascript:void(0);" id="{$row.region_id}" title="{$row.region_name|escape}">{$row.region_name|escape}</a> ({$row.count})</li>
+                            <!-- {else} -->
+                            <li style="display:none"><a href="javascript:void(0);" id="{$row.region_id}" title="{$row.region_name}">{$row.region_name|escape}</a> ({$row.count})</li>
+                            <!-- {/if} -->
+                            <!--{/foreach}-->
+                        </ul>
+                    </div>
+                    <!-- {if $region_count gt 10} -->
+                    <div class="more"><input type="button" class="brands_btn" value="{$lang.view_all_region}" id="show_region" /></div>
+                    <!-- {/if} -->
+                </div>
+            </div>
+            <!-- {/if} -->
+        </div>
+    </div>
+
+   <div class="right">
+      
+         <div class="propmain">
+         
+            <!--{if $filters}-->
+            <div style="{if $props}border-bottom:1px #E1E7F5 solid;{else}border-bottom:0;{/if}background:#F8FAFF;padding:5px;">
+               <span style="float:left">ÄúÒÑÑ¡Ôñ£º</span>
+               <div class="attribute" ectype="attribute">
+                  <!--{foreach from=$filters item=filter}-->
+                  <a href="javascript:;" title="{$filter.key}"><b>{$filter.name}:</b> {$filter.value}<span></span></a>
+                  <!--{/foreach}-->
+               </div>
+            </div>
+            <!--{/if}-->
+            
+            <!-- {if $props || $brands || $price_intervals || $regions} -->
+            <div style="padding:10px;width:768px;">
+            
+            
+
+            <!--{foreach from=$props item=prop name=fe_prop}-->
+            <div ectype="dl_props" class="peach">
+               <h4>{$prop.name}£º</h4>
+               <div class="propvalue">
+                  {foreach from=$prop.value item=row}
+                  <a href="javascript:void(0);" id="{$row.pid}:{$row.vid}" selected_props="{$props_selected}">{$row.prop_value|escape}</a>
+                  {/foreach}
+               </div>
+               <div class="clear"></div>
+            </div>
+            <!--{/foreach}-->
+            
+                      
+            </div>
+        </div>
+
+        <div class="shop_con_list">
+            <h2>
+                <div class="ornament1"></div>
+                <div class="ornament2"></div>
+                <div class="h2_wrap">
+                    <div class="table_title">
+                        <p class="title">{$lang.display_mode}:</p>
+                        <p class="list_ico" ectype="display_mode" ecvalue="list" title="{$lang.display_by_list}"></p>
+                        <p class="squares_ico" ectype="display_mode" ecvalue="squares" title="{$lang.display_by_item}"></p>
+                        <p class="line_ico"></p>
+                        <p class="title">{$lang.order_by}:</p>
+                        <p><select ectype="order_by">{html_options options=$orders selected=$smarty.get.order}</select></p>
+                    </div>
+                    <div class="top_page">
+                        {include file=page.top.html}
+                    </div>
+                </div>
+            </h2>
+
+            <div class="{$display_mode}" ectype="current_display_mode">
+                <!-- {if $goods_list} -->
+                <ul class="list_pic">
+                    <!--{foreach from=$goods_list item=goods}-->
+                    <li>
+                        <p><a href="{url app=goods&id=$goods.goods_id}" target="_blank"><img src="{$goods.default_image}" /></a></p>
+                        <h3>
+                            <span class="text_link">
+                                <span class="depict">
+                                    <a href="{url app=goods&id=$goods.goods_id}" target="_blank">{$goods.goods_name|escape}</a>
+                                </span>
+                                <span class="info">
+                                    <span>{$lang.store_name}: {$goods.store_name|escape}</span>
+                                    <span class="fontColor5">{$goods.grade_name|escape}</span>
+                                </span>
+                            </span>
+                            <span class="price">{$goods.price|price}</span>
+                            <b>{$lang.sales}: {$goods.sales|default:0} {$lang.unit} | <a href="{url app=goods&act=comments&id=$goods.goods_id}" target="_blank">{$goods.comments|default:0} {$lang.comment}</a></b>
+                        </h3>
+                    </li>
+                    <!--{/foreach}-->
+
+                    <div class="clear"></div>
+                </ul>
+                <!-- {else} -->
+                <div id="no_results">{$lang.no_records}</div>
+                <!-- {/if} -->
+            </div>
+        </div>
+
+        <div class="shop_list_page">
+            {include file=page.bottom.html}
+        </div>
+    </div>
+    <!--{else}-->
+    <div class="module_common">
+        <p class="no_info">{$lang.no_records}</p>
+    </div>
+    <!--{/if}-->
+</div>
+
+{include file=footer.html}
